@@ -10,6 +10,7 @@ async function migrate() {
     const contractsSchemaSql = fs.readFileSync(path.join(__dirname, 'contracts_schema.sql'), 'utf8');
     const attendanceSchemaSql = fs.readFileSync(path.join(__dirname, 'attendance_timeoff_schema.sql'), 'utf8');
     const attendanceSeedSql = fs.readFileSync(path.join(__dirname, 'attendance_timeoff_seed.sql'), 'utf8');
+    const salarySchemaSql = fs.readFileSync(path.join(__dirname, 'salary_schema.sql'), 'utf8');
 
     console.log('[QUANTUM-MIGRATE] Step 1: Applying core schema definitions...');
     await quantumPool.query(schemaSql);
@@ -38,6 +39,9 @@ async function migrate() {
 
     console.log('[QUANTUM-MIGRATE] Step 6: Seeding attendance logs, time-off allocations & requests...');
     await quantumPool.query(attendanceSeedSql);
+
+    console.log('[QUANTUM-MIGRATE] Step 7: Applying /quantum-salary-structuring, /gravitational-rule-engine & /warp-computation-matrix schema and seeds...');
+    await quantumPool.query(salarySchemaSql);
 
     console.log('[QUANTUM-MIGRATE] Quantum migration completed with 100% nominal thrust.');
     process.exit(0);

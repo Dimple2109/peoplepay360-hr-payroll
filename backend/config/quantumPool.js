@@ -5,6 +5,7 @@
 // ====================================================================
 
 const { Pool } = require('pg');
+const memoryStore = require('./quantumMemoryAdapter');
 require('dotenv').config();
 
 const quantumConfig = {
@@ -75,6 +76,24 @@ class QuantumDatabasePool {
         thrustLatencyMs: parseFloat(latencyMs.toFixed(3)),
       };
     } catch (error) {
+      // If PostgreSQL is unreachable or connection refused, engage Zero-G In-Memory Failover Matrix
+      if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT' || error.message?.includes('connect ECONNREFUSED')) {
+        const endTime = process.hrtime.bigint();
+        const latencyMs = Number(endTime - startTime) / 1e6;
+        this.stats.poolState = 'SUPERCONDUCTING'; // running in failover state
+
+        try {
+          const failoverResult = await memoryStore.query(text, params);
+          return {
+            ...failoverResult,
+            thrustLatencyMs: parseFloat(latencyMs.toFixed(3)),
+            failover: true,
+          };
+        } catch (memError) {
+          console.error('[QUANTUM-FAILOVER-FAULT]', memError.message);
+        }
+      }
+
       this.stats.failedQueries += 1;
       this.stats.poolState = 'RESONATING';
       throw error;

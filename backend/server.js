@@ -21,6 +21,8 @@ const contractRoutes  = require('./routes/contractRoutes');
 const scheduleRoutes  = require('./routes/scheduleRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');  // /orbital-attendance-sync & /gravity-exception-detector
 const timeOffRoutes   = require('./routes/timeOffRoutes');     // /zero-g-timeoff-allocator
+const salaryStructureRoutes = require('./routes/salaryStructureRoutes'); // /quantum-salary-structuring
+const salaryRuleRoutes      = require('./routes/salaryRuleRoutes');      // /gravitational-rule-engine & /warp-computation-matrix
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -46,10 +48,12 @@ app.use('/api/employees',         employeeRoutes);
 app.use('/api/departments',        departmentRoutes);
 app.use('/api/roles',              roleRoutes);
 app.use('/api/telemetry',          telemetryRoutes);
-app.use('/api/contracts',          contractRoutes);       // /temporal-contract-sync
-app.use('/api/working-schedules',  scheduleRoutes);       // /orbital-schedule-engine
-app.use('/api/attendance',         attendanceRoutes);     // /orbital-attendance-sync & /gravity-exception-detector
-app.use('/api/time-off',           timeOffRoutes);        // /zero-g-timeoff-allocator
+app.use('/api/contracts',          contractRoutes);          // /temporal-contract-sync
+app.use('/api/working-schedules',  scheduleRoutes);          // /orbital-schedule-engine
+app.use('/api/attendance',         attendanceRoutes);        // /orbital-attendance-sync & /gravity-exception-detector
+app.use('/api/time-off',           timeOffRoutes);           // /zero-g-timeoff-allocator
+app.use('/api/salary-structures',  salaryStructureRoutes);   // /quantum-salary-structuring
+app.use('/api/salary-rules',       salaryRuleRoutes);        // /gravitational-rule-engine & /warp-computation-matrix
 
 // Orbital Health & Quantum Pool Diagnostic
 app.get('/api/health', (req, res) => {
@@ -105,10 +109,15 @@ const server = app.listen(PORT, () => {
   • Working Schedules API:  http://localhost:${PORT}/api/working-schedules
   • Orbital Attendance API: http://localhost:${PORT}/api/attendance
   • Zero-G Time Off API:    http://localhost:${PORT}/api/time-off
+  • Salary Structures API:  http://localhost:${PORT}/api/salary-structures
+  • Salary Rules API:        http://localhost:${PORT}/api/salary-rules
   • Real-time Telemetry:    http://localhost:${PORT}/api/telemetry
   • PostgreSQL Port:        ${process.env.PGPORT || 5433}
   • Quantum Pool Status:    SUPERCONDUCTING
   • Levitation RBAC:        ACTIVE
+  • Quantum Salary Struct:  ACTIVE (/quantum-salary-structuring)
+  • Gravitational Rule Eng: SEQUENCING (/gravitational-rule-engine)
+  • Warp Computation Mat:   CALIBRATED (/warp-computation-matrix)
   • Temporal Contract Sync: ARMED
   • Orbital Schedule Eng:   CALIBRATED
   • Orbital Attendance Sync:ARMED

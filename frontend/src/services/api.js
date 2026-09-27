@@ -326,6 +326,119 @@ class ApiService {
   async getTimeOffStats() {
     return await this._request('/time-off/stats');
   }
+
+  // ─── Salary Structures (/quantum-salary-structuring) ─────────────
+  async getSalaryStructures(params = {}) {
+    const query = new URLSearchParams();
+    if (params.search) query.append('search', params.search);
+    if (params.is_active !== undefined) query.append('is_active', params.is_active);
+    if (params.wage_type) query.append('wage_type', params.wage_type);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await this._request(`/salary-structures${qs}`);
+  }
+
+  async getSalaryStructureStats() {
+    return await this._request('/salary-structures/stats');
+  }
+
+  async getSalaryStructureById(id) {
+    return await this._request(`/salary-structures/${id}`);
+  }
+
+  async createSalaryStructure(payload) {
+    return await this._request('/salary-structures', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async updateSalaryStructure(id, payload) {
+    return await this._request(`/salary-structures/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async toggleSalaryStructureStatus(id, is_active) {
+    return await this._request(`/salary-structures/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ is_active }),
+    });
+  }
+
+  async deleteSalaryStructure(id) {
+    return await this._request(`/salary-structures/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async duplicateSalaryStructure(id, payload = {}) {
+    return await this._request(`/salary-structures/${id}/duplicate`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  // /warp-computation-matrix: Dynamic calculation simulation
+  async calculateSalaryStructure(id, context = {}) {
+    return await this._request(`/salary-structures/${id}/calculate`, {
+      method: 'POST',
+      body: JSON.stringify(context),
+    });
+  }
+
+  // ─── Salary Rules (/gravitational-rule-engine) ───────────────────
+  async getSalaryRules(params = {}) {
+    const query = new URLSearchParams();
+    if (params.salary_structure_id) query.append('salary_structure_id', params.salary_structure_id);
+    if (params.category) query.append('category', params.category);
+    if (params.is_active !== undefined) query.append('is_active', params.is_active);
+    if (params.search) query.append('search', params.search);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await this._request(`/salary-rules${qs}`);
+  }
+
+  async getSalaryRuleById(id) {
+    return await this._request(`/salary-rules/${id}`);
+  }
+
+  async createSalaryRule(payload) {
+    return await this._request('/salary-rules', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async updateSalaryRule(id, payload) {
+    return await this._request(`/salary-rules/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteSalaryRule(id) {
+    return await this._request(`/salary-rules/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async reorderSalaryRules(salaryStructureId, reorderedRules) {
+    return await this._request('/salary-rules/reorder', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        salary_structure_id: salaryStructureId,
+        reordered_rules: reorderedRules,
+      }),
+    });
+  }
+
+  async validateFormula(formula) {
+    return await this._request('/salary-rules/validate-formula', {
+      method: 'POST',
+      body: JSON.stringify({ formula }),
+    });
+  }
 }
 
 export const api = new ApiService();
+
