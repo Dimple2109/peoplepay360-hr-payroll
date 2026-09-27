@@ -1,6 +1,7 @@
 import React from 'react';
 import { useZeroGravity } from '../context/ZeroGravityContext';
 import DossierContractWidget from './DossierContractWidget';
+import DossierAttendanceLeaveWidget from './DossierAttendanceLeaveWidget';
 import { 
   X, 
   Shield, 
@@ -25,7 +26,8 @@ export default function EmployeeDossierDrawer() {
     closeDossier, 
     viewingEmployee, 
     openEditModal,
-    transitionEmployeeStatus 
+    transitionEmployeeStatus,
+    refreshData
   } = useZeroGravity();
 
   if (!isDossierOpen || !viewingEmployee) return null;
@@ -142,6 +144,9 @@ export default function EmployeeDossierDrawer() {
 
           {/* Contract & Schedule Hub (embedded dossier widgets) */}
           <DossierContractWidget employee={emp} />
+
+          {/* Orbital Attendance & Zero-G Leave Balances Widget (Turn 2) */}
+          <DossierAttendanceLeaveWidget employee={emp} onRefreshEmployee={refreshData} />
 
           {/* Work Schedule & Supervisor */}
           <div className="space-y-3 text-xs">

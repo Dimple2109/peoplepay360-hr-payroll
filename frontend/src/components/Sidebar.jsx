@@ -10,6 +10,10 @@ import {
   RefreshCw,
   Cpu,
   FileText,
+  Clock,
+  CalendarCheck,
+  Palmtree,
+  AlertTriangle,
 } from 'lucide-react';
 import { useZeroGravity } from '../context/ZeroGravityContext';
 
@@ -17,9 +21,11 @@ const NAV_ITEMS = [
   { id: 'employees',  label: 'Employee Master',       icon: Users,         countKey: 'total_employees' },
   { id: 'contracts',  label: 'Contract Management',   icon: FileText,      tag: 'Turn 1' },
   { id: 'schedules',  label: 'Working Schedules',     icon: CalendarClock, tag: 'Turn 1' },
+  { id: 'attendance', label: 'Orbital Attendance',    icon: Clock,         tag: 'Turn 2', highlight: true },
+  { id: 'timeoff',    label: 'Zero-G Time Off',       icon: CalendarCheck, tag: 'Turn 2', highlight: true },
   { id: 'departments',label: 'Orbital Departments',   icon: Layers,        badge: '5 Decks' },
   { id: 'roles',      label: 'Clearance & Roles',     icon: ShieldCheck,   badge: '10 Tiers' },
-  { id: 'payroll',    label: 'Zero-G Payroll',        icon: CreditCard,    tag: 'Turn 2' },
+  { id: 'payroll',    label: 'Zero-G Payroll',        icon: CreditCard,    badge: 'Coming' },
   { id: 'telemetry',  label: 'Propulsion Telemetry',  icon: Activity,      badge: 'LIVE' },
 ];
 
@@ -38,7 +44,7 @@ export default function Sidebar() {
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = activeNav === item.id;
-              const isEnabled = ['employees', 'contracts', 'schedules'].includes(item.id);
+              const isEnabled = ['employees', 'contracts', 'schedules', 'attendance', 'timeoff'].includes(item.id);
               return (
                 <button
                   key={item.id}
@@ -68,7 +74,7 @@ export default function Sidebar() {
                     <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border ${
                       item.tag === 'Turn 1'
                         ? 'bg-emerald-950/60 border-emerald-500/30 text-emerald-400'
-                        : 'bg-purple-950/60 border-purple-500/30 text-purple-300'
+                        : 'bg-cyan-950/80 border-cyan-500/40 text-cyan-300 font-bold shadow-[0_0_8px_rgba(0,240,255,0.2)]'
                     }`}>
                       {item.tag}
                     </span>
@@ -92,12 +98,13 @@ export default function Sidebar() {
           </div>
           <div className="space-y-1.5 text-xs font-mono">
             {[
-              { key: 'zero-gravity-state', color: 'cyan', status: 'Active' },
-              { key: 'quantum-pooling',    color: 'purple', status: 'Online' },
-              { key: 'levitation-auth',    color: 'emerald', status: 'Armed' },
-              { key: 'propulsion-logging', color: 'amber', status: 'Tracking', pulse: true },
-              { key: 'temporal-contract',  color: 'sky', status: 'Armed', pulse: true },
-              { key: 'orbital-schedule',   color: 'violet', status: 'Online' },
+              { key: 'orbital-attendance-sync',  color: 'cyan',    status: 'Tracking', pulse: true },
+              { key: 'zero-g-timeoff-allocator', color: 'emerald', status: 'Allocating', pulse: true },
+              { key: 'gravity-exception-detector', color: 'amber', status: 'Alerting', pulse: true },
+              { key: 'temporal-contract-sync',   color: 'sky',     status: 'Armed' },
+              { key: 'orbital-schedule-engine',  color: 'violet',  status: 'Online' },
+              { key: 'quantum-database-pooling', color: 'purple',  status: 'Online' },
+              { key: 'levitation-auth-middleware', color: 'teal',  status: 'Armed' },
             ].map(({ key, color, status, pulse }) => (
               <div key={key} className="flex items-center justify-between p-2 rounded-lg bg-cosmic-900/60 border border-slate-800">
                 <span className={`text-slate-400 flex items-center gap-1.5 text-[10px]`}>

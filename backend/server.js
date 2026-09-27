@@ -19,6 +19,8 @@ const roleRoutes      = require('./routes/roleRoutes');
 const telemetryRoutes = require('./routes/telemetryRoutes');
 const contractRoutes  = require('./routes/contractRoutes');
 const scheduleRoutes  = require('./routes/scheduleRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');  // /orbital-attendance-sync & /gravity-exception-detector
+const timeOffRoutes   = require('./routes/timeOffRoutes');     // /zero-g-timeoff-allocator
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -46,6 +48,8 @@ app.use('/api/roles',              roleRoutes);
 app.use('/api/telemetry',          telemetryRoutes);
 app.use('/api/contracts',          contractRoutes);       // /temporal-contract-sync
 app.use('/api/working-schedules',  scheduleRoutes);       // /orbital-schedule-engine
+app.use('/api/attendance',         attendanceRoutes);     // /orbital-attendance-sync & /gravity-exception-detector
+app.use('/api/time-off',           timeOffRoutes);        // /zero-g-timeoff-allocator
 
 // Orbital Health & Quantum Pool Diagnostic
 app.get('/api/health', (req, res) => {
@@ -99,12 +103,17 @@ const server = app.listen(PORT, () => {
   • Employee Master API:    http://localhost:${PORT}/api/employees
   • Contract Mgmt API:      http://localhost:${PORT}/api/contracts
   • Working Schedules API:  http://localhost:${PORT}/api/working-schedules
+  • Orbital Attendance API: http://localhost:${PORT}/api/attendance
+  • Zero-G Time Off API:    http://localhost:${PORT}/api/time-off
   • Real-time Telemetry:    http://localhost:${PORT}/api/telemetry
   • PostgreSQL Port:        ${process.env.PGPORT || 5433}
   • Quantum Pool Status:    SUPERCONDUCTING
   • Levitation RBAC:        ACTIVE
   • Temporal Contract Sync: ARMED
   • Orbital Schedule Eng:   CALIBRATED
+  • Orbital Attendance Sync:ARMED
+  • Zero-G TimeOff Alloc:   ONLINE
+  • Gravity Exception Det:  ENGAGED
   ======================================================
   `);
 });

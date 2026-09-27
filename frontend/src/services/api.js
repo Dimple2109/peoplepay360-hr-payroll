@@ -191,6 +191,141 @@ class ApiService {
   async deleteSchedule(id) {
     return await this._request(`/working-schedules/${id}`, { method: 'DELETE' });
   }
+
+  // ─── Attendance (/orbital-attendance-sync & /gravity-exception-detector) ───
+  async getAttendance(params = {}) {
+    const query = new URLSearchParams();
+    if (params.employee_id) query.append('employee_id', params.employee_id);
+    if (params.date) query.append('date', params.date);
+    if (params.start_date) query.append('start_date', params.start_date);
+    if (params.end_date) query.append('end_date', params.end_date);
+    if (params.status && params.status !== 'ALL') query.append('status', params.status);
+    if (params.exceptions_only) query.append('exceptions_only', 'true');
+    if (params.department_id && params.department_id !== 'ALL') query.append('department_id', params.department_id);
+    if (params.sortBy) query.append('sortBy', params.sortBy);
+    if (params.order) query.append('order', params.order);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await this._request(`/attendance${qs}`);
+  }
+
+  async getAttendanceById(id) {
+    return await this._request(`/attendance/${id}`);
+  }
+
+  async checkInAttendance(payload) {
+    return await this._request('/attendance/check-in', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async checkOutAttendance(payload) {
+    return await this._request('/attendance/check-out', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async createAttendance(payload) {
+    return await this._request('/attendance', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async updateAttendance(id, payload) {
+    return await this._request(`/attendance/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteAttendance(id) {
+    return await this._request(`/attendance/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getAttendanceExceptions() {
+    return await this._request('/attendance/exceptions');
+  }
+
+  async getAttendanceStats() {
+    return await this._request('/attendance/stats');
+  }
+
+  // ─── Time Off (/zero-g-timeoff-allocator) ─────────────────────────
+  async getTimeOffTypes() {
+    return await this._request('/time-off/types');
+  }
+
+  async createTimeOffType(payload) {
+    return await this._request('/time-off/types', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async getTimeOffAllocations(params = {}) {
+    const query = new URLSearchParams();
+    if (params.employee_id) query.append('employee_id', params.employee_id);
+    if (params.year) query.append('year', params.year);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await this._request(`/time-off/allocations${qs}`);
+  }
+
+  async getEmployeeTimeOffSummary(employeeId, year = 2026) {
+    return await this._request(`/time-off/allocations/${employeeId}/summary?year=${year}`);
+  }
+
+  async setTimeOffAllocation(payload) {
+    return await this._request('/time-off/allocations', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async getTimeOffRequests(params = {}) {
+    const query = new URLSearchParams();
+    if (params.employee_id) query.append('employee_id', params.employee_id);
+    if (params.status && params.status !== 'ALL') query.append('status', params.status);
+    if (params.year) query.append('year', params.year);
+    if (params.department_id && params.department_id !== 'ALL') query.append('department_id', params.department_id);
+    if (params.sortBy) query.append('sortBy', params.sortBy);
+    if (params.order) query.append('order', params.order);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await this._request(`/time-off/requests${qs}`);
+  }
+
+  async createTimeOffRequest(payload) {
+    return await this._request('/time-off/requests', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async approveTimeOffRequest(id) {
+    return await this._request(`/time-off/requests/${id}/approve`, {
+      method: 'PATCH',
+    });
+  }
+
+  async refuseTimeOffRequest(id, rejection_reason) {
+    return await this._request(`/time-off/requests/${id}/refuse`, {
+      method: 'PATCH',
+      body: JSON.stringify({ rejection_reason }),
+    });
+  }
+
+  async deleteTimeOffRequest(id) {
+    return await this._request(`/time-off/requests/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getTimeOffStats() {
+    return await this._request('/time-off/stats');
+  }
 }
 
 export const api = new ApiService();

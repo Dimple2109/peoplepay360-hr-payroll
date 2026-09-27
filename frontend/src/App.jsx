@@ -12,10 +12,48 @@ import TelemetryHUD from './components/TelemetryHUD';
 import CosmicToasts from './components/CosmicToasts';
 import ContractManagement from './components/ContractManagement';
 import WorkingScheduleSetup from './components/WorkingScheduleSetup';
+import AttendanceManagement from './components/AttendanceManagement';
+import TimeOffManagement from './components/TimeOffManagement';
 import { Sparkles, Compass, Shield, FileText, CalendarClock } from 'lucide-react';
 
 function DashboardContent() {
   const { viewMode, activeNav } = useZeroGravity();
+
+  // ─── Orbital Attendance Management Page (Turn 2) ──────────────────────────
+  if (activeNav === 'attendance') {
+    return (
+      <div className="flex-1 flex flex-col min-h-screen bg-cosmic-950 overflow-y-auto pb-28">
+        <Navbar />
+        <div className="flex flex-1">
+          <Sidebar />
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+            <AttendanceManagement />
+          </main>
+        </div>
+        <EmployeeDossierDrawer />
+        <TelemetryHUD />
+        <CosmicToasts />
+      </div>
+    );
+  }
+
+  // ─── Zero-G Time Off Matrix Page (Turn 2) ─────────────────────────────────
+  if (activeNav === 'timeoff') {
+    return (
+      <div className="flex-1 flex flex-col min-h-screen bg-cosmic-950 overflow-y-auto pb-28">
+        <Navbar />
+        <div className="flex flex-1">
+          <Sidebar />
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+            <TimeOffManagement />
+          </main>
+        </div>
+        <EmployeeDossierDrawer />
+        <TelemetryHUD />
+        <CosmicToasts />
+      </div>
+    );
+  }
 
   // ─── Contract Management Page ────────────────────────────────────────────
   if (activeNav === 'contracts') {
