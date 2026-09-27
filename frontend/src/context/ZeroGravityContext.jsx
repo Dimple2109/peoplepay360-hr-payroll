@@ -24,6 +24,7 @@ export function ZeroGravityProvider({ children }) {
 
   // View & Filter State
   const [viewMode, setViewMode] = useState('list'); // 'list' | 'kanban'
+  const [activeNav, setActiveNav] = useState('employees'); // 'employees' | 'contracts' | 'schedules'
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDept, setSelectedDept] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
@@ -264,6 +265,8 @@ export function ZeroGravityProvider({ children }) {
         // Filters & Views
         viewMode,
         setViewMode,
+        activeNav,
+        setActiveNav,
         searchQuery,
         setSearchQuery,
         selectedDept,

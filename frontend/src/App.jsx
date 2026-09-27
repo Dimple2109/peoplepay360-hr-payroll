@@ -10,11 +10,50 @@ import EmployeeModal from './components/EmployeeModal';
 import EmployeeDossierDrawer from './components/EmployeeDossierDrawer';
 import TelemetryHUD from './components/TelemetryHUD';
 import CosmicToasts from './components/CosmicToasts';
-import { Sparkles, Compass, Shield } from 'lucide-react';
+import ContractManagement from './components/ContractManagement';
+import WorkingScheduleSetup from './components/WorkingScheduleSetup';
+import { Sparkles, Compass, Shield, FileText, CalendarClock } from 'lucide-react';
 
 function DashboardContent() {
-  const { viewMode } = useZeroGravity();
+  const { viewMode, activeNav } = useZeroGravity();
 
+  // ─── Contract Management Page ────────────────────────────────────────────
+  if (activeNav === 'contracts') {
+    return (
+      <div className="flex-1 flex flex-col min-h-screen bg-cosmic-950 overflow-y-auto pb-28">
+        <Navbar />
+        <div className="flex flex-1">
+          <Sidebar />
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+            <ContractManagement />
+          </main>
+        </div>
+        <EmployeeDossierDrawer />
+        <TelemetryHUD />
+        <CosmicToasts />
+      </div>
+    );
+  }
+
+  // ─── Working Schedule Setup Page ─────────────────────────────────────────
+  if (activeNav === 'schedules') {
+    return (
+      <div className="flex-1 flex flex-col min-h-screen bg-cosmic-950 overflow-y-auto pb-28">
+        <Navbar />
+        <div className="flex flex-1">
+          <Sidebar />
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+            <WorkingScheduleSetup />
+          </main>
+        </div>
+        <EmployeeDossierDrawer />
+        <TelemetryHUD />
+        <CosmicToasts />
+      </div>
+    );
+  }
+
+  // ─── Default: Employee Master Directory ───────────────────────────────────
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-cosmic-950 overflow-y-auto pb-28">
       <Navbar />

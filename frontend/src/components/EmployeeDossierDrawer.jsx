@@ -1,5 +1,6 @@
 import React from 'react';
 import { useZeroGravity } from '../context/ZeroGravityContext';
+import DossierContractWidget from './DossierContractWidget';
 import { 
   X, 
   Shield, 
@@ -138,6 +139,9 @@ export default function EmployeeDossierDrawer() {
               <span className="text-quantum-cyan">{formatCurrency(totalComp)}</span>
             </div>
           </div>
+
+          {/* Contract & Schedule Hub (embedded dossier widgets) */}
+          <DossierContractWidget employee={emp} />
 
           {/* Work Schedule & Supervisor */}
           <div className="space-y-3 text-xs">

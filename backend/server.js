@@ -13,10 +13,12 @@ const quantumPool = require('./config/quantumPool');
 const { levitationAuth } = require('./middleware/levitationAuth');
 const { propulsionLogger } = require('./middleware/propulsionLogger');
 
-const employeeRoutes = require('./routes/employeeRoutes');
+const employeeRoutes  = require('./routes/employeeRoutes');
 const departmentRoutes = require('./routes/departmentRoutes');
-const roleRoutes = require('./routes/roleRoutes');
+const roleRoutes      = require('./routes/roleRoutes');
 const telemetryRoutes = require('./routes/telemetryRoutes');
+const contractRoutes  = require('./routes/contractRoutes');
+const scheduleRoutes  = require('./routes/scheduleRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -38,10 +40,12 @@ app.use(propulsionLogger);
 app.use(levitationAuth);
 
 // API Endpoints
-app.use('/api/employees', employeeRoutes);
-app.use('/api/departments', departmentRoutes);
-app.use('/api/roles', roleRoutes);
-app.use('/api/telemetry', telemetryRoutes);
+app.use('/api/employees',         employeeRoutes);
+app.use('/api/departments',        departmentRoutes);
+app.use('/api/roles',              roleRoutes);
+app.use('/api/telemetry',          telemetryRoutes);
+app.use('/api/contracts',          contractRoutes);       // /temporal-contract-sync
+app.use('/api/working-schedules',  scheduleRoutes);       // /orbital-schedule-engine
 
 // Orbital Health & Quantum Pool Diagnostic
 app.get('/api/health', (req, res) => {
@@ -93,11 +97,14 @@ const server = app.listen(PORT, () => {
   • Port:                   http://localhost:${PORT}
   • Health & Pool Check:    http://localhost:${PORT}/api/health
   • Employee Master API:    http://localhost:${PORT}/api/employees
+  • Contract Mgmt API:      http://localhost:${PORT}/api/contracts
+  • Working Schedules API:  http://localhost:${PORT}/api/working-schedules
   • Real-time Telemetry:    http://localhost:${PORT}/api/telemetry
   • PostgreSQL Port:        ${process.env.PGPORT || 5433}
   • Quantum Pool Status:    SUPERCONDUCTING
   • Levitation RBAC:        ACTIVE
-  • Propulsion Velocity:    CALIBRATED
+  • Temporal Contract Sync: ARMED
+  • Orbital Schedule Eng:   CALIBRATED
   ======================================================
   `);
 });

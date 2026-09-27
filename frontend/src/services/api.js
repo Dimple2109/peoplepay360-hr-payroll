@@ -107,6 +107,90 @@ class ApiService {
   async reseedData() {
     return await this._request('/telemetry/reseed', { method: 'POST' });
   }
+
+  // ─── Contracts (/temporal-contract-sync) ────────────────────────
+  async getContracts(params = {}) {
+    const query = new URLSearchParams();
+    if (params.employee_id) query.append('employee_id', params.employee_id);
+    if (params.status)      query.append('status', params.status);
+    if (params.payroll_period) query.append('payroll_period', params.payroll_period);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await this._request(`/contracts${qs}`);
+  }
+
+  async getContractById(id) {
+    return await this._request(`/contracts/${id}`);
+  }
+
+  async getActiveContract(employeeId, payrollPeriod) {
+    const qs = payrollPeriod ? `?payroll_period=${payrollPeriod}` : '';
+    return await this._request(`/contracts/active/${employeeId}${qs}`);
+  }
+
+  async getEmployeeContractHistory(employeeId) {
+    return await this._request(`/contracts/employee/${employeeId}/history`);
+  }
+
+  async createContract(payload) {
+    return await this._request('/contracts', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async updateContract(id, payload) {
+    return await this._request(`/contracts/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async activateContract(id) {
+    return await this._request(`/contracts/${id}/activate`, { method: 'PATCH' });
+  }
+
+  async deleteContract(id) {
+    return await this._request(`/contracts/${id}`, { method: 'DELETE' });
+  }
+
+  // ─── Working Schedules (/orbital-schedule-engine) ────────────────
+  async getSchedules(params = {}) {
+    const query = new URLSearchParams();
+    if (params.employee_id) query.append('employee_id', params.employee_id);
+    if (params.is_active !== undefined) query.append('is_active', params.is_active);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await this._request(`/working-schedules${qs}`);
+  }
+
+  async getScheduleById(id) {
+    return await this._request(`/working-schedules/${id}`);
+  }
+
+  async getActiveSchedule(employeeId) {
+    return await this._request(`/working-schedules/active/${employeeId}`);
+  }
+
+  async getEmployeeScheduleHistory(employeeId) {
+    return await this._request(`/working-schedules/employee/${employeeId}/history`);
+  }
+
+  async createSchedule(payload) {
+    return await this._request('/working-schedules', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async updateSchedule(id, payload) {
+    return await this._request(`/working-schedules/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteSchedule(id) {
+    return await this._request(`/working-schedules/${id}`, { method: 'DELETE' });
+  }
 }
 
 export const api = new ApiService();
