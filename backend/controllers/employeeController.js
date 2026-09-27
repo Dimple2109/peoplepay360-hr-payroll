@@ -135,10 +135,10 @@ async function getEmployeeById(req, res) {
       LEFT JOIN departments d ON e.department_id = d.id
       LEFT JOIN roles r ON e.role_id = r.id
       LEFT JOIN employees m ON e.manager_id = m.id
-      WHERE e.id = $1 OR e.employee_id = $1
+      WHERE e.id::text = $1::text OR e.employee_id = $1::text
     `;
 
-    const { rows, thrustLatencyMs } = await quantumPool.query(queryText, [id]);
+    const { rows, thrustLatencyMs } = await quantumPool.query(queryText, [id.toString()]);
 
     if (rows.length === 0) {
       return res.status(404).json({

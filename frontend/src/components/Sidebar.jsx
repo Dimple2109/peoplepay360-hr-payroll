@@ -17,20 +17,22 @@ import {
   Calculator,
   Workflow,
   Sparkles,
+  Zap,
 } from 'lucide-react';
 import { useZeroGravity } from '../context/ZeroGravityContext';
 
 const NAV_ITEMS = [
-  { id: 'employees',         label: 'Employee Master',       icon: Users,         countKey: 'total_employees' },
-  { id: 'salary-structures', label: 'Salary Structures',     icon: Layers,        tag: 'Turn 2', highlight: true },
-  { id: 'salary-rules',      label: 'Salary Rule Engine',    icon: Workflow,      tag: 'Turn 2', highlight: true },
-  { id: 'contracts',         label: 'Contract Management',   icon: FileText,      tag: 'Turn 1' },
-  { id: 'schedules',         label: 'Working Schedules',     icon: CalendarClock, tag: 'Turn 1' },
-  { id: 'attendance',        label: 'Orbital Attendance',    icon: Clock,         tag: 'Turn 2' },
-  { id: 'timeoff',           label: 'Zero-G Time Off',       icon: CalendarCheck, tag: 'Turn 2' },
-  { id: 'departments',       label: 'Orbital Departments',   icon: Compass,       badge: '5 Decks' },
-  { id: 'roles',             label: 'Clearance & Roles',     icon: ShieldCheck,   badge: '10 Tiers' },
-  { id: 'telemetry',         label: 'Propulsion Telemetry',  icon: Activity,      badge: 'LIVE' },
+  { id: 'payroll',           label: 'Zero-G Payroll Cockpit', icon: CreditCard,    tag: 'Final', highlight: true },
+  { id: 'payruns',           label: 'Orbital Payrun Wizard',  icon: Zap,           tag: 'Final', highlight: true },
+  { id: 'employees',         label: 'Employee Master',        icon: Users,         countKey: 'total_employees' },
+  { id: 'salary-structures', label: 'Salary Structures',      icon: Layers,        badge: 'Rule Engine' },
+  { id: 'contracts',         label: 'Contract Management',    icon: FileText,      badge: 'Active' },
+  { id: 'schedules',         label: 'Working Schedules',      icon: CalendarClock, badge: '5x8 / Shift' },
+  { id: 'attendance',        label: 'Orbital Attendance',     icon: Clock,         badge: 'Real-time' },
+  { id: 'timeoff',           label: 'Zero-G Time Off',        icon: CalendarCheck, badge: 'Allocations' },
+  { id: 'departments',       label: 'Orbital Departments',    icon: Compass,       badge: '5 Decks' },
+  { id: 'roles',             label: 'Clearance & Roles',      icon: ShieldCheck,   badge: '10 Tiers' },
+  { id: 'telemetry',         label: 'Propulsion Telemetry',   icon: Activity,      badge: 'LIVE' },
 ];
 
 export default function Sidebar() {
@@ -47,8 +49,8 @@ export default function Sidebar() {
           <nav className="space-y-1.5">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
-              const isActive = activeNav === item.id || (activeNav === 'payroll' && item.id === 'salary-structures');
-              const isEnabled = ['employees', 'salary-structures', 'salary-rules', 'contracts', 'schedules', 'attendance', 'timeoff'].includes(item.id);
+              const isActive = activeNav === item.id;
+              const isEnabled = ['employees', 'payroll', 'payruns', 'salary-structures', 'contracts', 'schedules', 'attendance', 'timeoff'].includes(item.id);
               return (
                 <button
                   key={item.id}
@@ -75,11 +77,7 @@ export default function Sidebar() {
                   )}
 
                   {item.tag && (
-                    <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border ${
-                      item.tag === 'Turn 1'
-                        ? 'bg-emerald-950/60 border-emerald-500/30 text-emerald-400'
-                        : 'bg-cyan-950/80 border-cyan-500/40 text-cyan-300 font-bold shadow-[0_0_8px_rgba(0,240,255,0.2)]'
-                    }`}>
+                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded border bg-cyan-950/80 border-cyan-500/40 text-cyan-300 font-bold shadow-[0_0_8px_rgba(0,240,255,0.2)]">
                       {item.tag}
                     </span>
                   )}
@@ -102,15 +100,14 @@ export default function Sidebar() {
           </div>
           <div className="space-y-1.5 text-xs font-mono">
             {[
-              { key: 'quantum-salary-structuring', color: 'cyan',    status: 'Containerized', pulse: true },
-              { key: 'gravitational-rule-engine',  color: 'violet',  status: 'Sequencing', pulse: true },
-              { key: 'warp-computation-matrix',    color: 'amber',   status: 'Calculated', pulse: true },
-              { key: 'orbital-attendance-sync',    color: 'emerald', status: 'Tracking' },
-              { key: 'zero-g-timeoff-allocator',   color: 'teal',    status: 'Allocating' },
-              { key: 'temporal-contract-sync',     color: 'sky',     status: 'Armed' },
-              { key: 'orbital-schedule-engine',    color: 'purple',  status: 'Online' },
-              { key: 'quantum-database-pooling',   color: 'indigo',  status: 'Superconducting' },
-              { key: 'levitation-auth-middleware', color: 'pink',    status: 'Armed' },
+              { key: 'stellar-payroll-dashboard', color: 'cyan',    status: 'Online', pulse: true },
+              { key: 'orbital-payrun-wizard',     color: 'sky',     status: 'Ready', pulse: true },
+              { key: 'quantum-payslip-engine',    color: 'purple',  status: 'Calibrated', pulse: true },
+              { key: 'teleport-pdf-disbursal',    color: 'teal',    status: 'Armed', pulse: true },
+              { key: 'orbital-attendance-sync',   color: 'emerald', status: 'Tracking' },
+              { key: 'zero-g-timeoff-allocator',  color: 'amber',   status: 'Allocating' },
+              { key: 'gravity-exception-detector',color: 'rose',    status: 'Engaged' },
+              { key: 'quantum-database-pooling',  color: 'indigo',  status: 'Superconducting' },
             ].map(({ key, color, status, pulse }) => (
               <div key={key} className="flex items-center justify-between p-2 rounded-lg bg-cosmic-900/60 border border-slate-800">
                 <span className={`text-slate-400 flex items-center gap-1.5 text-[10px]`}>

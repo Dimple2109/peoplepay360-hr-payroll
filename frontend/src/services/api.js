@@ -438,6 +438,75 @@ class ApiService {
       body: JSON.stringify({ formula }),
     });
   }
+
+  // ─── Payruns (/orbital-payrun-wizard & /quantum-payslip-engine) ────
+  async getPayruns(params = {}) {
+    const query = new URLSearchParams();
+    if (params.status && params.status !== 'ALL') query.append('status', params.status);
+    if (params.search) query.append('search', params.search);
+    if (params.sortBy) query.append('sortBy', params.sortBy);
+    if (params.order) query.append('order', params.order);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await this._request(`/payruns${qs}`);
+  }
+
+  async getPayrunById(id) {
+    return await this._request(`/payruns/${id}`);
+  }
+
+  async createPayrun(payload) {
+    return await this._request('/payruns', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async computePayrun(id, payload = {}) {
+    return await this._request(`/payruns/${id}/compute`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async validatePayrun(id) {
+    return await this._request(`/payruns/${id}/validate`, {
+      method: 'POST',
+    });
+  }
+
+  async markPayrunPaid(id) {
+    return await this._request(`/payruns/${id}/mark-paid`, {
+      method: 'POST',
+    });
+  }
+
+  async bulkSendEmails(id) {
+    return await this._request(`/payruns/${id}/send-emails`, {
+      method: 'POST',
+    });
+  }
+
+  async deletePayrun(id) {
+    return await this._request(`/payruns/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // ─── Payslips (/teleport-pdf-disbursal) ────────────────────────────
+  async getPayslipById(id) {
+    return await this._request(`/payslips/${id}`);
+  }
+
+  async sendSinglePayslipEmail(id) {
+    return await this._request(`/payslips/${id}/send-email`, {
+      method: 'POST',
+    });
+  }
+
+  // ─── Payroll Dashboard Metrics (/stellar-payroll-dashboard) ────────
+  async getPayrollDashboardMetrics() {
+    return await this._request('/dashboard/payroll-metrics');
+  }
 }
 
 export const api = new ApiService();

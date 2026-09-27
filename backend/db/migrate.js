@@ -11,6 +11,8 @@ async function migrate() {
     const attendanceSchemaSql = fs.readFileSync(path.join(__dirname, 'attendance_timeoff_schema.sql'), 'utf8');
     const attendanceSeedSql = fs.readFileSync(path.join(__dirname, 'attendance_timeoff_seed.sql'), 'utf8');
     const salarySchemaSql = fs.readFileSync(path.join(__dirname, 'salary_schema.sql'), 'utf8');
+    const payrollSchemaSql = fs.readFileSync(path.join(__dirname, 'payroll_schema.sql'), 'utf8');
+    const payrollSeedSql = fs.readFileSync(path.join(__dirname, 'payroll_seed.sql'), 'utf8');
 
     console.log('[QUANTUM-MIGRATE] Step 1: Applying core schema definitions...');
     await quantumPool.query(schemaSql);
@@ -42,6 +44,12 @@ async function migrate() {
 
     console.log('[QUANTUM-MIGRATE] Step 7: Applying /quantum-salary-structuring, /gravitational-rule-engine & /warp-computation-matrix schema and seeds...');
     await quantumPool.query(salarySchemaSql);
+
+    console.log('[QUANTUM-MIGRATE] Step 8: Applying payruns & payslips schema (/orbital-payrun-wizard & /quantum-payslip-engine)...');
+    await quantumPool.query(payrollSchemaSql);
+
+    console.log('[QUANTUM-MIGRATE] Step 9: Seeding payrun cycles & payslips (/teleport-pdf-disbursal & /stellar-payroll-dashboard)...');
+    await quantumPool.query(payrollSeedSql);
 
     console.log('[QUANTUM-MIGRATE] Quantum migration completed with 100% nominal thrust.');
     process.exit(0);

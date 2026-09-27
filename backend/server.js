@@ -23,6 +23,9 @@ const attendanceRoutes = require('./routes/attendanceRoutes');  // /orbital-atte
 const timeOffRoutes   = require('./routes/timeOffRoutes');     // /zero-g-timeoff-allocator
 const salaryStructureRoutes = require('./routes/salaryStructureRoutes'); // /quantum-salary-structuring
 const salaryRuleRoutes      = require('./routes/salaryRuleRoutes');      // /gravitational-rule-engine & /warp-computation-matrix
+const payrunRoutes          = require('./routes/payrunRoutes');          // /orbital-payrun-wizard & /quantum-payslip-engine
+const payslipRoutes         = require('./routes/payslipRoutes');         // /teleport-pdf-disbursal
+const dashboardRoutes       = require('./routes/dashboardRoutes');       // /stellar-payroll-dashboard
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -54,6 +57,9 @@ app.use('/api/attendance',         attendanceRoutes);        // /orbital-attenda
 app.use('/api/time-off',           timeOffRoutes);           // /zero-g-timeoff-allocator
 app.use('/api/salary-structures',  salaryStructureRoutes);   // /quantum-salary-structuring
 app.use('/api/salary-rules',       salaryRuleRoutes);        // /gravitational-rule-engine & /warp-computation-matrix
+app.use('/api/payruns',            payrunRoutes);            // /orbital-payrun-wizard & /quantum-payslip-engine
+app.use('/api/payslips',           payslipRoutes);           // /teleport-pdf-disbursal
+app.use('/api/dashboard',          dashboardRoutes);         // /stellar-payroll-dashboard
 
 // Orbital Health & Quantum Pool Diagnostic
 app.get('/api/health', (req, res) => {
@@ -111,6 +117,9 @@ const server = app.listen(PORT, () => {
   • Zero-G Time Off API:    http://localhost:${PORT}/api/time-off
   • Salary Structures API:  http://localhost:${PORT}/api/salary-structures
   • Salary Rules API:        http://localhost:${PORT}/api/salary-rules
+  • Orbital Payruns API:    http://localhost:${PORT}/api/payruns
+  • Teleport Payslips API:  http://localhost:${PORT}/api/payslips
+  • Stellar Dashboard API:  http://localhost:${PORT}/api/dashboard/payroll-metrics
   • Real-time Telemetry:    http://localhost:${PORT}/api/telemetry
   • PostgreSQL Port:        ${process.env.PGPORT || 5433}
   • Quantum Pool Status:    SUPERCONDUCTING
@@ -118,6 +127,10 @@ const server = app.listen(PORT, () => {
   • Quantum Salary Struct:  ACTIVE (/quantum-salary-structuring)
   • Gravitational Rule Eng: SEQUENCING (/gravitational-rule-engine)
   • Warp Computation Mat:   CALIBRATED (/warp-computation-matrix)
+  • Orbital Payrun Wizard:  READY (/orbital-payrun-wizard)
+  • Quantum Payslip Engine: CALIBRATED (/quantum-payslip-engine)
+  • Teleport PDF Disbursal: ARMED (/teleport-pdf-disbursal)
+  • Stellar Payroll Dash:   ONLINE (/stellar-payroll-dashboard)
   • Temporal Contract Sync: ARMED
   • Orbital Schedule Eng:   CALIBRATED
   • Orbital Attendance Sync:ARMED
