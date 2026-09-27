@@ -1,0 +1,11 @@
+{
+  "name": "peoplepay360-hr-payroll",
+  "version": "1.0.0",
+  "description": "PeoplePay360 Anti-Gravity HR & Payroll Operating System",
+  "scripts": {
+    "dev:backend": "cd backend && node --watch server.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "db:migrate": "cd backend && node db/migrate.js",
+    "build:frontend": "cd frontend && npm run build"
+  }
+}
